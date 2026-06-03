@@ -1,5 +1,6 @@
-build/
 *.vcd
-*.out
+*.json
 *.bin
 *.asc
+sim
+output*.pcf
