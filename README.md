@@ -1,4 +1,5 @@
 # FPGA-Based AI Accelerator — Matrix Multiplication Engine
+![Simulation](https://github.com/avanni31/fpga-ai-accelerator/actions/workflows/simulate.yml/badge.svg)
 
 > A hardware-level AI inference accelerator implemented in Verilog/SystemVerilog on an FPGA, built from scratch using a modular bottom-up design methodology. This project demonstrates the full design stack — from primitive arithmetic units to a fully orchestrated 2×2 systolic array with FSM-controlled execution and board-level deployment.
 
