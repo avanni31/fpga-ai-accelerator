@@ -213,6 +213,9 @@ Cout = (A·B) | (B·Cin) | (A·Cin)
 
 **Testing:** All 8 possible input combinations (2³) are exhaustively tested in the testbench, covering every case of carry propagation.
 
+**Simulation Output (GTKWave):**
+![Full Adder Waveform](output/Full_Adder.png)
+
 ---
 
 ### 2. Multiplier
@@ -243,6 +246,9 @@ always @(posedge clk)
 
 **Role in the system:** The accumulator concept is the foundation of the MAC unit — instead of just summing identical inputs, the MAC multiplies first, then accumulates the products.
 
+**Simulation Output (GTKWave):**
+![Accumulator Waveform](output/Accumulator.png)
+
 ---
 
 ### 4. MAC Unit
@@ -264,6 +270,9 @@ This single operation is what makes matrix multiplication fast in hardware. An e
 - Internal product: 8-bit (`wire [7:0] mult = A * B`)
 - Output Y: 16-bit (accumulates multiple products safely)
 
+**Simulation Output (GTKWave):**
+![MAC Unit Waveform](output/Mac_Unit.png)
+
 ---
 
 ### 5. Processing Element
@@ -281,6 +290,9 @@ always @(posedge clk)
 **Why enable matters:** In a systolic array, not all PEs should compute at all times. The enable signal — driven by the FSM — allows the controller to precisely gate when computation happens. This is critical for correctness: you don't want PEs accumulating garbage values while the system is in an idle or loading state.
 
 **This is the most reused module in the project.** Every systolic array (1D and 2D) is assembled entirely from instances of this module.
+
+**Simulation Output (GTKWave):**
+![Processing Element Waveform](output/processing_element.png)
 
 ---
 
@@ -300,6 +312,9 @@ always @(posedge clk or posedge reset)
 
 **Analogy:** It's like a staging area in a warehouse. Goods arrive and are held in a staging zone before being moved to the production line.
 
+**Simulation Output (GTKWave):**
+![Input Buffer Waveform](output/input_buffer.png)
+
 ---
 
 ### 7. Weight Buffer
@@ -309,6 +324,9 @@ always @(posedge clk or posedge reset)
 Identical in structure to the input buffer but dedicated to **neural network weights**. In ML, weights are the learned parameters of a model — they are loaded once and reused across many input activations.
 
 **Why a separate buffer for weights?** Separating data and weight paths is a common pattern in hardware ML accelerators (including Google's TPU). It reflects the real access pattern of inference: weights are static per inference pass, while activations change with every input sample. Having separate buffers allows them to be loaded at different times and potentially from different memory banks.
+
+**Simulation Output (GTKWave):**
+![Weight Buffer Waveform](output/weight_buffer.png)
 
 ---
 
@@ -336,6 +354,9 @@ The **brain of the accelerator**. A 4-state Finite State Machine that sequences 
 
 **Design decision — one-cycle LOAD state:** The LOAD state exists to give buffers time to present stable data before the enable signal activates the PEs. This is a pipeline hazard prevention technique — without it, the first compute cycle might use uninitialized data.
 
+**Simulation Output (GTKWave):**
+![Controller FSM Waveform](output/controller_fsm.png)
+
 ---
 
 ### 9. 1D Systolic Array
@@ -354,6 +375,9 @@ data_in ──► PE1 (weight1) ──► out1
 **What is a systolic array?** The term "systolic" comes from the heart's rhythmic pumping — data flows through the array in a regular, rhythmic pattern, like blood through the circulatory system. Each PE receives data, processes it, and passes it along. This regular data flow is highly efficient in hardware because there is no shared memory bus — each PE communicates only with its neighbours.
 
 **Why pipeline the data?** The `data_pipe` register introduces a one-cycle delay before data reaches PE1. This is the classic systolic timing: PE0 processes cycle N's data while PE1 processes cycle N-1's data. In a larger array, this staggering allows different PEs to work on different rows of the input simultaneously, achieving high utilization.
+
+**Simulation Output (GTKWave):**
+![Systolic Array 1D Waveform](output/systolic_array_1d.png)
 
 ---
 
@@ -385,6 +409,9 @@ C11 = A10*B01 + A11*B11
 ```
 In this implementation, each PE accumulates its partial products over multiple clock cycles as data is streamed in, producing the correct final result.
 
+**Simulation Output (GTKWave):**
+![Systolic Array 2D Waveform](output/systolic_array_2d.png)
+
 ---
 
 ### 11. PE Array 2×2
@@ -394,6 +421,9 @@ In this implementation, each PE accumulates its partial products over multiple c
 A testbench for a flat 2×2 PE array where each PE is independently addressed with its own `A`/`B` inputs and produces its own `Y` output. This tests the PE array in isolation, verifying that four PEs instantiated together don't interfere with each other and that each accumulates correctly.
 
 **Test vectors:** Two rounds of different (A, B) pairs are fed into the four PEs to verify independent accumulation across all cells.
+
+**Simulation Output (GTKWave):**
+![PE Array 2×2 Waveform](output/PE_Array_2_2.png)
 
 ---
 
@@ -413,6 +443,9 @@ assign C01 = (A00 * B01) + (A01 * B11);
 
 **Tradeoffs of combinational vs clocked:** The combinational version is fast (result available in one propagation delay) but does not pipeline — it cannot stream data. It also consumes more LUT resources for the same operation because there's no register sharing. The systolic array is slower to produce a final result but scales to larger matrices and uses pipelining for throughput.
 
+**Simulation Output (GTKWave):**
+![Matrix Multiplier 2×2 Waveform](output/Matrix_Mult_2_2.png)
+
 ---
 
 ### 13. AI Accelerator Final
@@ -429,6 +462,9 @@ start ──► controller_fsm ──► enable, done
 
 **Design note:** In this version, the result is computed as a simple addition of the buffered data and weight — a placeholder for what would normally be a MAC operation. This module's primary value is demonstrating the **integration pattern**: how buffers, controllers, and compute units are wired together with clean interfaces.
 
+**Simulation Output (GTKWave):**
+![AI Accelerator Final Waveform](output/ai_accelerator_final.png)
+
 ---
 
 ### 14. AI Accelerator Top
@@ -442,6 +478,9 @@ The **primary top-level module** of the design. Integrates the `controller_fsm` 
 - Matrix outputs: `Y00..Y11` (16-bit each)
 
 **This is the module that represents the complete, working accelerator.** All other modules are either subcomponents of this or standalone experiments that informed its design.
+
+**Simulation Output (GTKWave):**
+![AI Accelerator Top Waveform](output/ai_accelerator_top.png)
 
 ---
 
@@ -481,6 +520,9 @@ Y11 = 4*7 + 5*9 = 28 + 45 = 73
 
 These values are computed correctly inside the FPGA fabric — they just cannot all be routed out to visible pins on this particular board.
 
+**Board Output:**
+![Board Demo Output](output/output.png)
+
 ---
 
 ### 16. Board Demo 2 (LED Output)
@@ -508,6 +550,9 @@ In other words, even though the numerical result (36, 41, 64, 73) cannot be dire
 - Compact RISC-V + FPGA development board
 - Limited I/O pins — sufficient for control signals, not for full 64-bit output observation
 - Ideal for learning FPGA design flows end-to-end on real hardware
+
+**Board Output — LED lit when `done = 1`:**
+![Board Demo 2 Output](output/output_2.png)
 
 ---
 
