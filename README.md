@@ -678,8 +678,6 @@ gtkwave build/systolic_array_2d.vcd
 | **Verilog/SystemVerilog** | Hardware description language for all RTL |
 | **Icarus Verilog (iverilog)** | Open-source Verilog simulation and compilation |
 | **GTKWave** | VCD waveform viewer for debugging simulation output |
-| **Vivado / Quartus** | FPGA synthesis, place & route, bitstream generation |
-| **ModelSim** | Industry-standard HDL simulation for waveform analysis |
 | **VSDSquadron FM (FPGA Mini)** | Physical FPGA board used for hardware deployment and demo |
 
 ---
