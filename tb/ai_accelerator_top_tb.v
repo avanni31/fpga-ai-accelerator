@@ -1,5 +1,4 @@
 `timescale 1ns/1ps
-
 module ai_accelerator_top_tb;
 
 reg clk;
@@ -22,15 +21,15 @@ ai_accelerator_top uut(
 	.A10(A10),
 	.A11(A11),
 
-        .B00(B00),
-        .B01(B01),
-        .B10(B10),
-        .B11(B11),
+	.B00(B00),
+    .B01(B01),
+	.B10(B10),
+    .B11(B11),
 
-        .Y00(Y00),
-        .Y01(Y01),
-        .Y10(Y10),
-        .Y11(Y11),
+	.Y00(Y00),
+    .Y01(Y01),
+	.Y10(Y10),
+	.Y11(Y11),
 
 	.done(done)
 );
@@ -55,19 +54,35 @@ initial begin
 	B10=8; B11=9;
 
 	#10;
-
 	reset=0;
 
 	#10;
-
 	start=1;
 
 	#10;
-
 	start=0;
 
 	#60;
 
+	$display("");
+	$display("=================================");
+	$display("     AI ACCELERATOR RESULTS      ");
+	$display("=================================");
+	$display("  Y00 = %0d  (expected 36)", Y00);
+	$display("  Y01 = %0d  (expected 41)", Y01);
+	$display("  Y10 = %0d  (expected 64)", Y10);
+	$display("  Y11 = %0d  (expected 73)", Y11);
+	$display("=================================");
+
+	if (Y00==16'd36 && Y01==16'd41 && Y10==16'd64 && Y11==16'd73)
+		$display("  STATUS : ALL OUTPUTS CORRECT  ");
+	else
+		$display("  STATUS : MISMATCH DETECTED    ");
+
+	$display("=================================");
+	$display("");
+
 	$finish;
 end
+
 endmodule
