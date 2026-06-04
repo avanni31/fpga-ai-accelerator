@@ -228,6 +228,10 @@ A 4-bit combinational multiplier. Takes two 4-bit inputs and produces their prod
 
 **Note on the output width:** The testbench correctly wires the output to `wire [7:0] P`, though the RTL declares it as `[3:0]`. This is a known design point — in the integrated design, multiplication products are properly sized at 8 bits inside the MAC unit.
 
+
+**Simulation Output (GTKWave):**
+![Multiplier Waveform](output/Multiplier.png)
+
 ---
 
 ### 3. Accumulator
