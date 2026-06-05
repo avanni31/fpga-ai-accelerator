@@ -74,7 +74,7 @@ initial begin
 	$display("  Y11 = %0d  (expected 45)", Y11);
 	$display("=================================");
 
-	if (Y00==16'd36 && Y01==16'd41 && Y10==16'd64 && Y11==16'd73)
+	if (Y00==16'd12 && Y01==16'd21 && Y10==16'd32 && Y11==16'd45)
 		$display("  STATUS : ALL OUTPUTS CORRECT  ");
 	else
 		$display("  STATUS : MISMATCH DETECTED    ");
