@@ -15,12 +15,11 @@ jobs:
 
       - name: Compile and run simulation
         run: |
-          cd ai_accelerator_top
           mkdir -p build
           iverilog -o build/sim \
             tb/ai_accelerator_top_tb.v \
             rtl/ai_accelerator_top.v \
-            ../controller_fsm/rtl/controller_fsm.v \
-            ../systolic_array_2d/rtl/systolic_array_2d.v \
-            ../processing_element/rtl/processing_element.v
+            rtl/controller_fsm.v \
+            rtl/systolic_array_2d.v \
+            rtl/processing_element.v
           vvp build/sim
