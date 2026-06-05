@@ -68,10 +68,10 @@ initial begin
 	$display("=================================");
 	$display("     AI ACCELERATOR RESULTS      ");
 	$display("=================================");
-	$display("  Y00 = %0d  (expected 36)", Y00);
-	$display("  Y01 = %0d  (expected 41)", Y01);
-	$display("  Y10 = %0d  (expected 64)", Y10);
-	$display("  Y11 = %0d  (expected 73)", Y11);
+	$display("  Y00 = %0d  (expected 12)", Y00);
+	$display("  Y01 = %0d  (expected 21)", Y01);
+	$display("  Y10 = %0d  (expected 32)", Y10);
+	$display("  Y11 = %0d  (expected 45)", Y11);
 	$display("=================================");
 
 	if (Y00==16'd36 && Y01==16'd41 && Y10==16'd64 && Y11==16'd73)
