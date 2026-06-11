@@ -681,15 +681,19 @@ You can run and verify the simulation output directly on this repository — no 
 3. Click **"simulate"** on the left sidebar
 4. Expand the **"Compile and run simulation"** step
 5. You will see the actual output printed from the hardware simulation:
-   
+ 
+```
 =================================
-AI ACCELERATOR RESULTS
-Y00 = 12  (expected 12)
-Y01 = 21  (expected 21)
-Y10 = 32  (expected 32)
-Y11 = 45  (expected 45)
-STATUS : ALL OUTPUTS CORRECT
-
+     AI ACCELERATOR RESULTS
+=================================
+  Y00 = 12  (expected 12)
+  Y01 = 21  (expected 21)
+  Y10 = 32  (expected 32)
+  Y11 = 45  (expected 45)
+=================================
+  STATUS : ALL OUTPUTS CORRECT
+=================================
+```
 This simulation is automatically re-run on every commit using GitHub Actions and Icarus Verilog — no manual steps required.
 
 ---
