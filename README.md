@@ -681,6 +681,7 @@ You can run and verify the simulation output directly on this repository — no 
 3. Click **"simulate"** on the left sidebar
 4. Expand the **"Compile and run simulation"** step
 5. You will see the actual output printed from the hardware simulation:
+   
 =================================
 AI ACCELERATOR RESULTS
 Y00 = 12  (expected 12)
